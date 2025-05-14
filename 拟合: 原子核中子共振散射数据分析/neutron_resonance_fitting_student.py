@@ -15,6 +15,7 @@ def breit_wigner(E, Er, Gamma, fr):
     返回:
         float or numpy.ndarray: 共振截面(mb)
     """
+    return fr / ((E - Er) ** 2 + Gamma ** 2 / 4)
     # TODO: 在此实现Breit-Wigner公式 (约1行代码)
     # [STUDENT_CODE_HERE]
     raise NotImplementedError("请在 {} 中实现此函数".format(__file__))
@@ -36,7 +37,9 @@ def fit_without_errors(energy, cross_section):
     Er_guess = 75.0
     Gamma_guess = 50.0
     fr_guess = 10000.0
-    
+    p0 = [Er_guess, Gamma_guess, fr_guess]
+    popt, pcov = curve_fit(breit_wigner, energy, cross_section, p0=p0)
+    return popt, pcov
     # TODO: 使用curve_fit进行拟合 (约1行代码)
     # [STUDENT_CODE_HERE]
     raise NotImplementedError("请在 {} 中实现此函数".format(__file__))
@@ -59,7 +62,9 @@ def fit_with_errors(energy, cross_section, errors):
     Er_guess = 75.0
     Gamma_guess = 50.0
     fr_guess = 10000.0
-    
+    p0 = [Er_guess, Gamma_guess, fr_guess]
+    popt, pcov = curve_fit(breit_wigner, energy, cross_section, p0=p0, sigma=errors, absolute_sigma=True)
+    return popt, pcov
     # TODO: 使用curve_fit进行拟合，考虑误差 (约1行代码)
     # [STUDENT_CODE_HERE]
     raise NotImplementedError("请在 {} 中实现此函数".format(__file__))
